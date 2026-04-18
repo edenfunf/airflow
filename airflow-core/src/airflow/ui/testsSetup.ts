@@ -19,7 +19,7 @@
 import "@testing-library/jest-dom/vitest";
 import { cleanup } from "@testing-library/react";
 import type { HttpHandler } from "msw";
-import { setupServer, type SetupServerApi } from "msw/node";
+import { setupServer } from "msw/node";
 import { beforeEach, beforeAll, afterAll, afterEach, vi } from "vitest";
 
 import { handlers } from "src/mocks/handlers";
@@ -72,10 +72,9 @@ vi.mock("chart.js", () => ({
   Tooltip: vi.fn(),
 }));
 
-let server: SetupServerApi;
+const server = setupServer(...(handlers as Array<HttpHandler>));
 
 beforeAll(() => {
-  server = setupServer(...(handlers as Array<HttpHandler>));
   server.listen({ onUnhandledRequest: "bypass" });
 });
 
